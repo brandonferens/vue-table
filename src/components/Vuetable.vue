@@ -423,6 +423,14 @@ export default {
             var url = this.apiUrl + '?' + this.getAllQueryParams()
             this.$http.get(url, this.httpData, this.httpOptions)
                 .then(function(response) {
+                    if (typeof response.data === 'string') {
+                        try {
+                            response.data = JSON.parse(response.data);
+                        } catch (e) {
+                            response.data = null;
+                        }
+                    }
+                    
                     self.tableData = self.getObjectValue(response.data, self.dataPath, null)
                     self.tablePagination = self.getObjectValue(response.data, self.paginationPath, null)
                     if (self.tablePagination === null) {
